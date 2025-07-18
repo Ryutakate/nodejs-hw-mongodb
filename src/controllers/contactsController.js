@@ -8,12 +8,29 @@ import {
 import createError from 'http-errors';
 
 const getAllContactsController = async (req, res) => {
-    const contacts = await getAllContacts();
+    const { page = 1, perPage = 10, sortBy = "name", sortOrder = "asc", type, isFavourite } = req.query;
+
+    const {
+        contacts,
+        totalItems,
+        totalPages,
+    } = await getAllContacts({ page, perPage, sortBy, sortOrder, type, isFavourite });
+
     res.json({
         status: 200,
-        data: contacts,
+        message: "Successfully found contacts!",
+        data: {
+            data: contacts,
+            page: Number(page),
+            perPage: Number(perPage),
+            totalItems,
+            totalPages,
+            hasPreviousPage: Number(page) > 1,
+            hasNextPage: Number(page) < totalPages,
+        },
     });
 };
+
 
 const getContactByIdController = async (req, res, next) => {
     const { contactId } = req.params;
@@ -71,6 +88,7 @@ const deleteContactController = async (req, res, next) => {
 
     res.status(204).send();
 };
+
 
 export default {
     getAllContacts: getAllContactsController,
