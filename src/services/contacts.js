@@ -3,7 +3,6 @@ import { Contact } from '../models/contactModel.js';
 export const getAllContacts = async ({ page = 1, perPage = 10, sortBy = "name", sortOrder = "asc", type, isFavourite }) => {
     const skip = (page - 1) * perPage;
     const sortOptions = { [sortBy]: sortOrder === "desc" ? -1 : 1 };
-
     const filter = {};
     if (type) {
         filter.contactType = type;
