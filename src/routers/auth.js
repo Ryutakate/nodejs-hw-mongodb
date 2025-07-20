@@ -3,8 +3,7 @@ import ctrl  from '../controllers/authController.js';
 import { registerSchema, loginSchema, sendResetEmailSchema, resetPasswordSchema } from '../schemas/authSchemas.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import validateBody from '../middlewares/validateBody.js';
-import { sendResetEmailController } from "../controllers/auth.js";
-import { resetPasswordController } from '../controllers/authController.js';
+import { resetPasswordController, sendResetEmailController} from '../controllers/authController.js';
 
 const authRouter = express.Router();
 
