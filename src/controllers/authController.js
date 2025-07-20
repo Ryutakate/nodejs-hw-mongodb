@@ -1,5 +1,8 @@
 import * as authServices from '../services/authServices.js';
 import createHttpError from 'http-errors';
+import { sendResetEmail } from "../services/authServices.js";
+import { resetPassword } from '../services/authServices.js';
+
 
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -61,6 +64,33 @@ export const logout = async (req, res) => {
     res.clearCookie('refreshToken');
 
     res.status(204).send();
+};
+
+
+export const sendResetEmailController = async (req, res) => {
+    const { email } = req.body;
+
+    await sendResetEmail(email);
+
+    res.status(200).json({
+        status: 200,
+        message: "Reset password email has been successfully sent.",
+        data: {}
+    });
+};
+
+export const resetPasswordController = async (req, res, next) => {
+    try {
+        await resetPassword(req.body);
+
+        res.status(200).json({
+            status: 200,
+            message: "Password has been successfully reset.",
+            data: {},
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
 

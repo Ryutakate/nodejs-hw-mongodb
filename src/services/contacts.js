@@ -1,4 +1,6 @@
 import { Contact } from '../models/contactModel.js';
+import { uploadImageToCloudinary } from '../utils/uploadToCloudinary.js';
+
 
 export const getAllContacts = async ({ page = 1, perPage = 10, sortBy = "name", sortOrder = "asc", type, isFavourite, userId }) => {
     const skip = (page - 1) * perPage;
@@ -32,19 +34,26 @@ export const getContactById = async (id, userId) => {
     return await Contact.findOne({ _id: id, userId }); 
 };
 
-export const createContact = async (data) => {
+export const createContact = async (data, file) => {
+    if (file) {
+        const photoUrl = await uploadImageToCloudinary(file.buffer);
+        data.photo = photoUrl;
+    }
     const newContact = await Contact.create(data);
     return newContact;
 };
 
-export const updateContactById = async (id, data, userId) => {
-    return await Contact.findOneAndUpdate(
-        { _id: id, userId }, 
-        data,
-        { new: true }
-    );
+export const updateContactById = async (id, data, file) => {
+    if (file) {
+        const photoUrl = await uploadImageToCloudinary(file.buffer);
+        data.photo = photoUrl;
+    }
+    const updatedContact = await Contact.findByIdAndUpdate(id, data, { new: true });
+    return updatedContact;
 };
 
 export const deleteContactById = async (id, userId) => {
     return await Contact.findOneAndDelete({ _id: id, userId });
 };
+
+
