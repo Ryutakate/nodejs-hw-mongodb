@@ -3,9 +3,12 @@ import contactsController from '../controllers/contactsController.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import validateBody from '../middlewares/validateBody.js';
 import isValidId from '../middlewares/isValidId.js';
-import {createContactSchema, updateContactSchema} from '../schemas/contactSchemas.js';
+import authenticate from '../middlewares/authenticate.js';
+import { createContactSchema, updateContactSchema } from '../schemas/contactSchemas.js';
 
 const router = express.Router();
+
+router.use(authenticate);
 router.get('/', ctrlWrapper(contactsController.getAllContacts));
 router.get('/:contactId', isValidId, ctrlWrapper(contactsController.getContactById));
 router.post('/', validateBody(createContactSchema), ctrlWrapper(contactsController.createNewContact));
