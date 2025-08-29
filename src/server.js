@@ -6,6 +6,8 @@ import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import cookieParser from 'cookie-parser';
 import authRouter from './routers/auth.js';
+import 'dotenv/config';
+
 
 export const setupServer = () => {
     const app = express();
