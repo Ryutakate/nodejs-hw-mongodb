@@ -4,6 +4,7 @@ import createHttpError from 'http-errors';
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
     const user = await authServices.register({ name, email, password });
+
     res.status(201).json({
         status: 201,
         message: 'Successfully registered a user!',
@@ -18,12 +19,14 @@ export const login = async (req, res) => {
 
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
+        secure: true, 
+        sameSite: 'strict',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 днів
     });
 
     res.status(200).json({
         status: 200,
-        message: 'Successfully logged in an user!',
+        message: 'Successfully logged in a user!',
         data: { accessToken },
     });
 };
@@ -39,6 +42,8 @@ export const refreshSession = async (req, res) => {
 
     res.cookie('refreshToken', newRefreshToken, {
         httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
         maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
@@ -63,9 +68,9 @@ export const logout = async (req, res) => {
     res.status(204).send();
 };
 
-
 export default {
     register,
     login,
-}; 
-
+    refreshSession,
+    logout,
+};
