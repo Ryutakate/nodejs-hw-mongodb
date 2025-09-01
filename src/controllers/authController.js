@@ -20,7 +20,7 @@ export const login = async (req, res) => {
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true, 
-        sameSite: 'strict',
+        sameSite: "None",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 днів
     });
 
@@ -43,7 +43,7 @@ export const refreshSession = async (req, res) => {
     res.cookie('refreshToken', newRefreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: "None",
         maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
