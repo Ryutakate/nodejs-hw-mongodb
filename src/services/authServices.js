@@ -10,6 +10,7 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const ACCESS_TOKEN_LIFE = '15m'; 
 const REFRESH_TOKEN_LIFE = '30d';
 
+// ------------------- REGISTER -------------------
 export const register = async ({ name, email, password }) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -25,12 +26,13 @@ export const register = async ({ name, email, password }) => {
     });
 
     return {
-        _id: newUser._id,
+        id: newUser._id,
         name: newUser.name,
         email: newUser.email,
     };
 };
 
+// ------------------- LOGIN -------------------
 export const login = async ({ email, password }) => {
     const user = await User.findOne({ email });
     if (!user) {
@@ -42,7 +44,7 @@ export const login = async ({ email, password }) => {
         throw createHttpError(401, 'Email or password is wrong');
     }
 
-    const payload = { _id: user._id, email: user.email };
+    const payload = { id: user._id.toString(), email: user.email };
 
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFE });
     const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_LIFE });
@@ -63,6 +65,7 @@ export const login = async ({ email, password }) => {
     return { accessToken, refreshToken };
 };
 
+// ------------------- REFRESH SESSION -------------------
 export const refreshSession = async (oldRefreshToken) => {
     let payload;
     try {
@@ -76,17 +79,10 @@ export const refreshSession = async (oldRefreshToken) => {
         throw createHttpError(401, 'Session not found');
     }
 
-    const newAccessToken = jwt.sign(
-        { _id: payload._id, email: payload.email },
-        ACCESS_TOKEN_SECRET,
-        { expiresIn: ACCESS_TOKEN_LIFE }
-    );
+    const newPayload = { _id: payload._id, email: payload.email };
 
-    const newRefreshToken = jwt.sign(
-        { _id: payload._id, email: payload.email },
-        REFRESH_TOKEN_SECRET,
-        { expiresIn: REFRESH_TOKEN_LIFE }
-    );
+    const newAccessToken = jwt.sign(newPayload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFE });
+    const newRefreshToken = jwt.sign(newPayload, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_LIFE });
 
     const accessTokenValidUntil = new Date(Date.now() + 15 * 60 * 1000);
     const refreshTokenValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
@@ -100,6 +96,7 @@ export const refreshSession = async (oldRefreshToken) => {
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
 };
 
+// ------------------- LOGOUT -------------------
 export const logout = async (refreshToken) => {
     const session = await Session.findOne({ refreshToken });
     if (!session) {
