@@ -14,7 +14,7 @@ const authenticate = async (req, res, next) => {
 
         let payload;
         try {
-            payload = jwt.verify(token, process.env.JWT_SECRET);
+            payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
                 throw createHttpError(401, 'Access token expired');

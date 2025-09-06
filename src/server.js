@@ -6,6 +6,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import cookieParser from 'cookie-parser';
 import authRouter from './routers/auth.js';
+import 'dotenv/config';
 
 
 export const setupServer = () => {
@@ -13,8 +14,10 @@ export const setupServer = () => {
     app.use(cors());
     app.use(pino());
     app.use(express.json());
+    app.use(cookieParser());
 
     app.use('/contacts', contactsRouter);
+    app.use('/auth', authRouter);
 
     app.use(notFoundHandler);
     app.use(errorHandler);
@@ -23,9 +26,4 @@ export const setupServer = () => {
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
     });
-
-    app.use(cookieParser());
-    
-    app.use('/auth', authRouter);
-
 };
