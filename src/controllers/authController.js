@@ -3,7 +3,6 @@ import createHttpError from 'http-errors';
 import { sendResetEmail } from "../services/authServices.js";
 import { resetPassword } from '../services/authServices.js';
 
-
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
     const user = await authServices.register({ name, email, password });
