@@ -109,18 +109,21 @@ export const logout = async (refreshToken) => {
 
 export const sendResetEmail = async (email) => {
     const user = await User.findOne({ email });
-
     if (!user) {
         throw createHttpError(404, "User not found!");
     }
 
-    const token = jwt.sign(
-        { email },
-        process.env.JWT_SECRET,
-        { expiresIn: "5m" }
-    );
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "5m" });
 
     const resetLink = `${process.env.APP_DOMAIN}/reset-password?token=${token}`;
+
+    console.log("Transporter config:", {
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        user: process.env.SMTP_USER,
+        from: process.env.SMTP_FROM,
+        passwordSet: !!process.env.SMTP_PASSWORD,
+    });
 
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
@@ -129,6 +132,9 @@ export const sendResetEmail = async (email) => {
         auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASSWORD,
+        },
+        tls: {
+            rejectUnauthorized: false, // Тимчасово для тестування
         },
     });
 
@@ -140,13 +146,14 @@ export const sendResetEmail = async (email) => {
             <p>Click the link below to reset your password:</p>
             <a href="${resetLink}">${resetLink}</a>
             <p>This link will expire in 5 minutes.</p>
-        `
+        `,
     };
 
     try {
         await transporter.sendMail(mailOptions);
+        console.log("Email sent successfully to:", email);
     } catch (error) {
-        console.error("Email sending error:", error);
+        console.error("Email sending error:", error.message, error.stack); 
         throw createHttpError(500, "Failed to send the email, please try again later.");
     }
 };
