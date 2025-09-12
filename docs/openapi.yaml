@@ -13,7 +13,9 @@ servers:
   - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-u8gt.onrender.com
 paths:
-  # Додамо ендпоінти пізніше
+  /contacts/{contactId}:
+    get:
+      $ref: './swagger/paths/contacts/{id}/get.yaml'
 
 components:
   securitySchemes:
