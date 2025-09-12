@@ -4,7 +4,10 @@ import { initMongoConnection } from './db/initMongoConnection.js';
 
 const bootstrap = async () => {
     await initMongoConnection();
-    setupServer();
+    await setupServer(); 
 };
 
-bootstrap();
+bootstrap().catch((error) => {
+    console.error('Bootstrap failed:', error);
+    process.exit(1);
+});

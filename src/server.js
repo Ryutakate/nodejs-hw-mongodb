@@ -10,7 +10,7 @@ import authRouter from './routers/auth.js';
 import swaggerUi from 'swagger-ui-express';
 import { readFile } from 'fs/promises';
 
-export const setupServer = () => {
+export const setupServer = async () => {
     const app = express();
     app.use(cors());
     app.use(pino());
