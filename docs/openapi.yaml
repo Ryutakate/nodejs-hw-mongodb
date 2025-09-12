@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: NodeJS API Project
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: API for a learning project managing users and contacts with authentication and email reset functionality.
+tags:
+  - name: Auth
+  - name: Contacts
+servers:
+  - url: http://localhost:3000
+  - url: https://nodejs-hw-mongodb-u8gt.onrender.com
+paths:
+  # Додамо ендпоінти пізніше
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
