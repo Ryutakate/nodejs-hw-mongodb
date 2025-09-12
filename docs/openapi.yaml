@@ -14,6 +14,7 @@ servers:
   - url: https://nodejs-hw-mongodb-u8gt.onrender.com
 paths:
   # Додамо ендпоінти пізніше
+
 components:
   securitySchemes:
     bearerAuth:
