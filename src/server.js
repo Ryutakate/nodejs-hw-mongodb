@@ -7,7 +7,8 @@ import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import cookieParser from 'cookie-parser';
 import authRouter from './routers/auth.js';
-
+import swaggerUi from 'swagger-ui-express';
+import { readFile } from 'fs/promises';
 
 export const setupServer = () => {
     const app = express();
@@ -16,6 +17,9 @@ export const setupServer = () => {
     app.use(express.json());
     app.use(cookieParser());
 
+    const swaggerDocument = JSON.parse(await readFile(new URL('../docs/swagger.json', import.meta.url)));
+
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use('/contacts', contactsRouter);
     app.use('/auth', authRouter);
 
