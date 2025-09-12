@@ -16,6 +16,18 @@ paths:
   /contacts/{contactId}:
     get:
       $ref: './swagger/paths/contacts/{id}/get.yaml'
+  /contacts:
+    get:
+      $ref: './swagger/paths/contacts/get.yaml'
+  /contacts/{contactId}:
+    patch:
+      $ref: './swagger/paths/contacts/{id}/patch.yaml'
+  /contacts/{contactId}:
+    delete:
+      $ref: './swagger/paths/contacts/{id}/delete.yaml'
+  /contacts:
+    post:
+      $ref: './swagger/paths/contacts/post.yaml'
 
 components:
   securitySchemes:
