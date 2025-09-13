@@ -2,13 +2,13 @@ tags:
   - Contacts
 summary: Create a new contact
 operationId: createContact
-description: Create a new contact with optional photo upload. Requires authentication.
+description: Create a new contact with an optional photo upload. Requires authentication.
 security:
   - bearerAuth: []
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         properties:
@@ -20,6 +20,7 @@ requestBody:
             type: string
           photo:
             type: string
+            format: binary
 responses:
   '201':
     description: Successful creation
@@ -33,7 +34,7 @@ responses:
               example: 201
             message:
               type: string
-              example: Contact created
+              example: 'Contact created'
             data:
               type: object
               properties:
@@ -50,6 +51,10 @@ responses:
                       type: string
                     photo:
                       type: string
+                    contactType:
+                      type: string
+                    isFavourite:
+                      type: boolean
   '400':
     description: Invalid input
     content:
@@ -62,4 +67,4 @@ responses:
               example: 400
             message:
               type: string
-              example: Invalid data
+              example: 'Invalid data'
