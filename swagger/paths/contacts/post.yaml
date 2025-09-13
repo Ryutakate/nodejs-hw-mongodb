@@ -49,12 +49,18 @@ responses:
                       type: string
                     phoneNumber:
                       type: string
-                    photo:
-                      type: string
-                    contactType:
-                      type: string
                     isFavourite:
                       type: boolean
+                    contactType:
+                      type: string
+                    photo:
+                      type: string
+                    userId:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
   '400':
     description: Invalid input
     content:

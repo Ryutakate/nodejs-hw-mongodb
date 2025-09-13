@@ -40,12 +40,18 @@ responses:
                       type: string
                     phoneNumber:
                       type: string
-                    photo:
-                      type: string
-                    contactType:
-                      type: string
                     isFavourite:
                       type: boolean
+                    contactType:
+                      type: string
+                    photo:
+                      type: string
+                    userId:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
   '404':
     description: Contact not found
     content:

@@ -26,27 +26,27 @@ parameters:
     schema:
       type: string
       default: name
-    description: Field to sort by (e.g., name)
+    description: Field to sort by
   - name: sortOrder
     in: query
     required: false
     schema:
       type: string
-      enum: [asc, desc]
       default: asc
-    description: Sort order (asc or desc)
+      enum: [asc, desc]
+    description: Sort order
   - name: type
     in: query
     required: false
     schema:
       type: string
+      enum: [work, home, personal]
     description: Filter by contact type
   - name: isFavourite
     in: query
     required: false
     schema:
-      type: string
-      enum: [true, false]
+      type: boolean
     description: Filter by favorite status
 responses:
   '200':
@@ -74,7 +74,7 @@ responses:
                 page:
                   type: integer
                   example: 1
-                limit:
+                perPage:
                   type: integer
                   example: 10
                 contacts:
@@ -90,12 +90,18 @@ responses:
                         type: string
                       phoneNumber:
                         type: string
-                      photo:
-                        type: string
-                      contactType:
-                        type: string
                       isFavourite:
                         type: boolean
+                      contactType:
+                        type: string
+                      photo:
+                        type: string
+                      userId:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
   '401':
     description: Unauthorized
     content:
