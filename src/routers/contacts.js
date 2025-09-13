@@ -5,7 +5,7 @@ import isValidId from '../middlewares/isValidId.js';
 import authenticate from '../middlewares/authenticate.js';
 import { updateContactSchema } from '../schemas/contactSchemas.js';
 import upload from '../middlewares/uploadMiddleware.js';
-import { createContact, updateContactById as updateContact, getContactById, getAllContacts, deleteContactById as deleteContact } from '../services/contacts.js';
+import { createContact, updateContact, getContactById, getAllContacts, deleteContact } from '../services/contacts.js'; 
 
 const router = express.Router();
 
