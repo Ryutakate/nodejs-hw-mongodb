@@ -48,6 +48,12 @@ parameters:
     schema:
       type: boolean
     description: Filter by favorite status
+  - name: userId
+    in: query
+    required: false
+    schema:
+      type: string
+    description: Filter by user ID
 responses:
   '200':
     description: Successful response with paginated contacts
@@ -65,43 +71,22 @@ responses:
             data:
               type: object
               properties:
-                totalItems:
-                  type: integer
-                  example: 50
-                totalPages:
-                  type: integer
-                  example: 5
                 page:
                   type: integer
                   example: 1
                 perPage:
                   type: integer
                   example: 10
+                totalItems:
+                  type: integer
+                  example: 50
+                totalPages:
+                  type: integer
+                  example: 5
                 contacts:
                   type: array
                   items:
-                    type: object
-                    properties:
-                      _id:
-                        type: string
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      phoneNumber:
-                        type: string
-                      isFavourite:
-                        type: boolean
-                      contactType:
-                        type: string
-                      photo:
-                        type: string
-                      userId:
-                        type: string
-                      createdAt:
-                        type: string
-                      updatedAt:
-                        type: string
+                    $ref: '#/components/schemas/Contact'
   '401':
     description: Unauthorized
     content:

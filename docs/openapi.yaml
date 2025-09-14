@@ -31,3 +31,42 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+  schemas:
+    Contact:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          required: true
+        phoneNumber:
+          type: string
+          required: true
+        email:
+          type: string
+        isFavourite:
+          type: boolean
+          default: false
+        contactType:
+          type: string
+          enum: ['work', 'home', 'personal']
+          default: 'personal'
+          required: true
+        photo:
+          type: string
+          default: null
+        userId:
+          type: string
+          required: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - name
+        - phoneNumber
+        - contactType
+        - userId

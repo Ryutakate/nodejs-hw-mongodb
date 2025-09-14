@@ -5,7 +5,7 @@ import isValidId from '../middlewares/isValidId.js';
 import authenticate from '../middlewares/authenticate.js';
 import { updateContactSchema } from '../schemas/contactSchemas.js';
 import upload from '../middlewares/uploadMiddleware.js';
-import { createContact, updateContact, getContactById, getAllContacts, deleteContact } from '../services/contacts.js'; 
+import { createContact, updateContact, getContactById, getAllContacts, deleteContact } from '../services/contacts.js';
 
 const router = express.Router();
 
@@ -18,7 +18,13 @@ router.get('/', async (req, res, next) => {
         res.status(200).json({
             status: 200,
             message: 'Contacts retrieved successfully',
-            data: { totalItems, totalPages, page: Number(page), perPage: Number(perPage), contacts },
+            data: {
+                page: Number(page),
+                perPage: Number(perPage),
+                totalItems,
+                totalPages,
+                contacts,
+            },
         });
     } catch (error) {
         next(error);
@@ -29,8 +35,8 @@ router.get('/:contactId', isValidId, ctrlWrapper(async (req, res) => {
     const contact = await getContactById(req.params.contactId, req.user._id);
     if (!contact) {
         return res.status(404).json({
-            status: 404,
-            message: 'Contact not found',
+        status: 404,
+        message: 'Contact not found',
         });
     }
     res.status(200).json({
@@ -67,9 +73,9 @@ router.patch('/:contactId', isValidId, upload.single('photo'), validateBody(upda
         });
     }
     res.status(200).json({
-        status: 200,
-        message: 'Contact updated',
-        data: { contact },
+            status: 200,
+            message: 'Contact updated',
+            data: { contact },
     });
 }));
 
@@ -78,10 +84,10 @@ router.delete('/:contactId', isValidId, async (req, res, next) => {
         const { contactId } = req.params;
         const result = await deleteContact(contactId, req.user._id);
         if (!result) {
-            return res.status(404).json({
-                status: 404,
-                message: 'Contact not found',
-            });
+        return res.status(404).json({
+            status: 404,
+            message: 'Contact not found',
+        });
         }
         res.status(204).send();
     } catch (error) {
